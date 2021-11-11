@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="757.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <MenuBar prefHeight="25.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Import" />
+                  <MenuItem mnemonicParsing="false" text="Export" />
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Remove selected items" />
+              <MenuItem mnemonicParsing="false" text="Clear inventory" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Sort by">
+               <items>
+                  <RadioMenuItem mnemonicParsing="false" text="Date Added">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="SortByToggleGroup" />
+                     </toggleGroup>
+                  </RadioMenuItem>
+                  <RadioMenuItem mnemonicParsing="false" text="Name" toggleGroup="$SortByToggleGroup" />
+                  <RadioMenuItem mnemonicParsing="false" text="Serial Number" toggleGroup="$SortByToggleGroup" />
+                  <RadioMenuItem mnemonicParsing="false" text="Unspecified Action" toggleGroup="$SortByToggleGroup" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Search by">
+              <items>
+                  <MenuItem mnemonicParsing="false" text="Name" />
+                <MenuItem mnemonicParsing="false" text="Serial Number" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <BorderPane prefHeight="375.0" prefWidth="848.0">
+         <left>
+            <VBox alignment="TOP_CENTER" prefHeight="375.0" prefWidth="131.0" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField prefHeight="25.0" prefWidth="176.0" promptText="Item Name" />
+                  <TextField promptText="Serial Number" />
+                  <TextField prefHeight="25.0" prefWidth="89.0" promptText="Value" />
+                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="Add Item" />
+               </children>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" />
+               </padding>
+            </VBox>
+         </left>
+         <center>
+            <VBox BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <children>
+                  <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="630.0">
+                     <children>
+                        <TextField maxWidth="1.7976931348623157E308" prefWidth="576.0" promptText="Search" />
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Search" />
+                     </children>
+                  </HBox>
+                  <TableView editable="true" prefHeight="429.0" prefWidth="632.0">
+                    <columns>
+                      <TableColumn prefWidth="279.0" text="Name" />
+                      <TableColumn prefWidth="252.0" text="Serial Number" />
+                        <TableColumn prefWidth="94.0" text="Value" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </left>
+</BorderPane>
