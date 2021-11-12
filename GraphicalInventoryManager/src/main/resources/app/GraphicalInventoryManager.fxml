@@ -84,9 +84,9 @@
                   </HBox>
                   <TableView fx:id="inventoryTableView" editable="true" prefHeight="429.0" prefWidth="632.0">
                     <columns>
-                      <TableColumn prefWidth="315.0" text="Name" />
-                      <TableColumn prefWidth="216.0" text="Serial Number" />
-                        <TableColumn prefWidth="94.0" text="Value" />
+                      <TableColumn fx:id="nameTableViewColumn" prefWidth="315.0" text="Name" />
+                      <TableColumn fx:id="serialTableViewColumn" prefWidth="216.0" text="Serial Number" />
+                        <TableColumn fx:id="valueTableViewColumn" prefWidth="94.0" text="Value" />
                     </columns>
                   </TableView>
                </children>

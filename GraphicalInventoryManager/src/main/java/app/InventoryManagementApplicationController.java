@@ -7,15 +7,29 @@ package app;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
+import logic.Inventory;
+import logic.InventoryItem;
 
 public class InventoryManagementApplicationController
 {
+    private Inventory inventory;
 
     @FXML
     private TableView<?> inventoryTableView;
+
+    @FXML
+    public TableColumn<InventoryItem, String> nameTableViewColumn;
+
+    @FXML
+    public TableColumn<InventoryItem, String> serialTableViewColumn;
+
+    @FXML
+    public TableColumn<InventoryItem, String> valueTableViewColumn;
 
     @FXML
     private TextField itemNameTextField;
@@ -96,6 +110,7 @@ public class InventoryManagementApplicationController
     public void initialize()
     {
         // Init blank inventory
+        inventory = new Inventory();
 
         // Init RadioMenuItemEnums
 
@@ -103,7 +118,22 @@ public class InventoryManagementApplicationController
 
         // Init toggle group change listeners
 
+        // Init TableView
+
         // Init TableView change listener
+    }
+
+    private void initTableView()
+    {
+        inventoryTableView = new TableView<>();
+
+        // Bind table columns to InventoryItem fields
+        nameTableViewColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        serialTableViewColumn.setCellValueFactory(new PropertyValueFactory<>("serial"));
+        valueTableViewColumn.setCellValueFactory(new PropertyValueFactory<>("valueInDollars"));
+
+        // Why doesn't this work?
+//        inventoryTableView.getItems().add(new InventoryItem("test item", "A-XXX-XXX-XXX", 12.00));
     }
 
     private void initRadioMenuItemEnums()
