@@ -81,6 +81,8 @@ public class InventoryManagementApplicationController
         // Display FileChooser to get path to source inventory
 
         // Import inventory
+
+        // Clear current inventory
     }
 
     @FXML
