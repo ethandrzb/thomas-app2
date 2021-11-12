@@ -55,4 +55,11 @@ public class InventoryItem
         //return value
         return null;
     }
+
+    public String toString()
+    {
+        // Return the string representation of this item
+
+        return "";
+    }
 }

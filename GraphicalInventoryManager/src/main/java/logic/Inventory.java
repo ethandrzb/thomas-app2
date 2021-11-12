@@ -49,6 +49,11 @@ public class Inventory
         // Remove all items in items from inventoryItems
     }
 
+    public void clearInventory()
+    {
+        // Clear inventory
+    }
+
     public String toString()
     {
         // Return the collective string representation of all items in the inventory

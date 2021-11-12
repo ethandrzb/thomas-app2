@@ -43,7 +43,8 @@ public class InventoryManagementApplicationController
         // If all inputs are valid, create a new inventory item
     }
 
-    public void searchInventory(ActionEvent actionEvent)
+    @FXML
+    public void searchInventory(ActionEvent event)
     {
         // Generate new predicate to match items in the search criteria (search string and mode)
     }
