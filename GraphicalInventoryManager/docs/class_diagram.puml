@@ -1,0 +1,100 @@
+@startuml
+'https://plantuml.com/class-diagram
+
++class InventoryManagementApplication
+{
+    +static void main(String[] args)
+    +void start(Stage stage)
+}
+
++class InventoryManagementApplicationController
+{
+    private TableView<?> inventoryTableView;
+    private TextField itemNameTextField;
+    private TextField itemSerialTextField;
+    private TextField itemValueTextField;
+    private ToggleGroup searchByToggleGroup;
+    private TextField searchTextField;
+    private ToggleGroup sortByToggleGroup;
+
+    public void addItemButtonPressed(ActionEvent event)
+    public void searchInventory(ActionEvent event)
+    public void clearInventoryMenuItemSelected(ActionEvent event)
+    public void saveMenuItemSelected(ActionEvent event)
+    public void loadMenuItemSelected(ActionEvent event)
+    public void removeSelectedItemsMenuItemSelected(ActionEvent event)
+    private void displayErrorDialog(String title, String message)
+
+    public void initialize()
+    private void initRadioMenuItemEnums()
+}
+
++class InventoryItem
+{
+    SimpleStringProperty name;
+    SimpleStringProperty serial;
+    SimpleDoubleProperty value;
+
+    public InventoryItem(String name, String serial, double value)
+
+    public void setName(String name)
+    public SimpleStringProperty getName()
+
+    public void setSerial(String serial)
+    public SimpleStringProperty getSerial()
+
+    public void setValue(double value)
+    public SimpleDoubleProperty getValue()
+
+    public String toString()
+}
+
++class Inventory
+{
+    private ArrayList<InventoryItem> inventoryItemData;
+    private ObservableList<InventoryItem> inventoryItems;
+
+    public Inventory()
+    public Inventory(List<InventoryItem> items)
+
+    public void addInventoryItem(String name, String serial, double value)
+    public void removeItem(InventoryItem item)
+
+    public Set<String> getSerialsInUse()
+
+    public void removeMultipleItems(List<InventoryItem> items)
+    public void clearInventory()
+
+    public String toString()
+}
+
++class ApplicationStateSerializer
+{
+    public Inventory loadInventory(Path path)
+    public Inventory loadFromTSV(File file)
+    public Inventory loadFromHTML(File file)
+    public Inventory loadFromJSON(File file)
+
+    public void saveInventory(Inventory inventory, File file)
+    public void saveToTSV(Inventory inventory, File file)
+    public void saveToHTML(Inventory inventory, File file)
+    public void saveToJSON(Inventory inventory, File file)
+}
+
++class InventoryValidator
+{
+    public boolean isValidItemName(String name)
+    public boolean isValidSerial(String serial)
+    public boolean isValidMonetaryValue(String monetaryValue)
+
+    public boolean validateAllInputs(String name, String serial, String value)
+    private boolean validateInventory(Inventory inventory)
+}
+
+InventoryItem --* Inventory
+Inventory --* InventoryManagementApplicationController
+InventoryValidator --* InventoryManagementApplicationController
+InventoryValidator --* ApplicationStateSerializer
+ApplicationStateSerializer --* InventoryManagementApplicationController
+
+@enduml
