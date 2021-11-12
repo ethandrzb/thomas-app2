@@ -5,59 +5,76 @@
 
 package logic;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Inventory
 {
-    private ArrayList<InventoryItem> inventoryItemData;
-    private ObservableList<InventoryItem> inventoryItems;
+    private final ObservableList<InventoryItem> inventoryItems;
 
     public Inventory()
     {
-        // Initialize ArrayLists
+        inventoryItems = FXCollections.observableList(new ArrayList<>());
     }
 
     public Inventory(List<InventoryItem> items)
     {
+        this();
+
         // Add all items in items to inventoryItems
+        inventoryItems.addAll(items);
     }
 
     public void addInventoryItem(String name, String serial, double value)
     {
         // Create new inventory item and add it to the inventory
+        inventoryItems.add(new InventoryItem(name, serial, value));
     }
 
     public void removeItem(InventoryItem item)
     {
         // Remove item from inventory
+        inventoryItems.remove(item);
     }
 
     public Set<String> getSerialsInUse()
     {
-        // Generate a quickly searchable set of the serial numbers of each InventoryItem
+        HashSet<String> serialsInUse = new HashSet<>();
 
-        return Collections.emptySet();
+        // Generate a quickly searchable set of the serial numbers of each InventoryItem
+        for(InventoryItem item : inventoryItems)
+        {
+            serialsInUse.add(item.getSerial());
+        }
+
+        return serialsInUse;
     }
 
     public void removeMultipleItems(List<InventoryItem> items)
     {
         // Remove all items in items from inventoryItems
+        inventoryItems.removeAll(items);
     }
 
     public void clearInventory()
     {
         // Clear inventory
+        inventoryItems.clear();
     }
 
     public String toString()
     {
-        // Return the collective string representation of all items in the inventory
+        StringBuilder output = new StringBuilder();
 
-        return "";
+        // Return the collective string representation of all items in the inventory
+        for(InventoryItem item : inventoryItems)
+        {
+            output.append(item.toString());
+            output.append('\n');
+        }
+
+        return output.toString();
     }
 }
