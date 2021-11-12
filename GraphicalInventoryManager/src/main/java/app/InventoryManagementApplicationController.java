@@ -68,7 +68,7 @@ public class InventoryManagementApplicationController
     }
 
     @FXML
-    public void exportMenuItemSelected(ActionEvent event)
+    public void saveMenuItemSelected(ActionEvent event)
     {
         // Display FileChooser to get path to destination file
 
@@ -76,7 +76,7 @@ public class InventoryManagementApplicationController
     }
 
     @FXML
-    public void importMenuItemSelected(ActionEvent event)
+    public void loadMenuItemSelected(ActionEvent event)
     {
         // Display FileChooser to get path to source inventory
 
