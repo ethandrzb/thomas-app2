@@ -14,20 +14,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="757.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="757.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.InventoryManagementApplicationController">
    <top>
       <MenuBar prefHeight="25.0" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Import" />
-                  <MenuItem mnemonicParsing="false" text="Export" />
+                  <MenuItem mnemonicParsing="false" onAction="#importMenuItemSelected" text="Import" />
+                  <MenuItem mnemonicParsing="false" onAction="#exportMenuItemSelected" text="Export" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Remove selected items" />
-              <MenuItem mnemonicParsing="false" text="Clear inventory" />
+                  <MenuItem mnemonicParsing="false" onAction="#removeSelectedItemsMenuItemSelected" text="Remove selected items" />
+              <MenuItem mnemonicParsing="false" onAction="#clearInventoryMenuItemSelected" text="Clear inventory" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Sort by">
@@ -60,10 +60,10 @@
          <left>
             <VBox alignment="TOP_CENTER" prefHeight="375.0" prefWidth="131.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField prefHeight="25.0" prefWidth="176.0" promptText="Item Name" />
-                  <TextField promptText="Serial Number" />
-                  <TextField prefHeight="25.0" prefWidth="89.0" promptText="Value" />
-                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="Add Item" />
+                  <TextField fx:id="itemNameTextField" prefHeight="25.0" prefWidth="176.0" promptText="Item Name" />
+                  <TextField fx:id="itemSerialNumberTextField" promptText="Serial Number" />
+                  <TextField fx:id="itemValueTextField" prefHeight="25.0" prefWidth="89.0" promptText="Value" />
+                  <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#addItemButtonPressed" text="Add Item" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" />
@@ -78,14 +78,14 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="630.0">
                      <children>
-                        <TextField maxWidth="1.7976931348623157E308" prefWidth="576.0" promptText="Search" />
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Search" />
+                        <TextField fx:id="searchTextField" maxWidth="1.7976931348623157E308" prefWidth="576.0" promptText="Search" />
+                        <Button mnemonicParsing="false" onAction="#searchButtonPressed" prefHeight="25.0" prefWidth="55.0" text="Search" />
                      </children>
                   </HBox>
-                  <TableView editable="true" prefHeight="429.0" prefWidth="632.0">
+                  <TableView fx:id="inventoryTableView" editable="true" prefHeight="429.0" prefWidth="632.0">
                     <columns>
-                      <TableColumn prefWidth="279.0" text="Name" />
-                      <TableColumn prefWidth="252.0" text="Serial Number" />
+                      <TableColumn prefWidth="315.0" text="Name" />
+                      <TableColumn prefWidth="216.0" text="Serial Number" />
                         <TableColumn prefWidth="94.0" text="Value" />
                     </columns>
                   </TableView>
