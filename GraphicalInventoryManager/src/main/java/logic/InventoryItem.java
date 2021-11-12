@@ -10,56 +10,52 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class InventoryItem
 {
-    SimpleStringProperty name;
-    SimpleStringProperty serial;
-    SimpleDoubleProperty value;
+    SimpleStringProperty name = new SimpleStringProperty();
+    SimpleStringProperty serial = new SimpleStringProperty();
+    SimpleDoubleProperty value = new SimpleDoubleProperty();
 
     public InventoryItem(String name, String serial, double value)
     {
-        // Convert serial to uppercase
-
         // Assign instance variables
+        this.name.set(name);
+        this.serial.set(serial.toUpperCase());
+        this.value.set(value);
     }
-
-    // Getters and setters for name, serial, and value
 
     public void setName(String name)
     {
-        // Update name property with new value
+        this.name.set(name);
     }
 
-    public SimpleStringProperty getName()
+    public String getName()
     {
-        //return name
-        return null;
+        return name.get();
     }
 
     public void setSerial(String serial)
     {
-        // Update serial property with new value
+        this.serial.set(serial);
     }
 
-    public SimpleStringProperty getSerial()
+    public String getSerial()
     {
-        //return serial
-        return null;
+        return serial.get();
     }
 
     public void setValue(double value)
     {
-        // Update value property with new value
+        this.value.set(value);
     }
 
-    public SimpleDoubleProperty getValue()
+    public double getValue()
     {
-        //return value
-        return null;
+        return value.get();
     }
 
     public String toString()
     {
-        // Return the string representation of this item
-
-        return "";
+        return "Name: " + name + '\n'
+                +  "Serial: " + serial + '\n'
+                + "Value: " + value + '\n';
     }
 }
