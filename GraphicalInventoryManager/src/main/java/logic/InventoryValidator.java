@@ -5,7 +5,7 @@
 
 package logic;
 
-public class InventoryItemValidator
+public class InventoryValidator
 {
     public boolean isValidItemName(String name)
     {
@@ -37,6 +37,23 @@ public class InventoryItemValidator
     {
         // Check if monetaryValue is a decimal number
         // with at least one number to the left of the decimal point and two numbers right of it.
+
+        return false;
+    }
+
+    private boolean validateInventory(Inventory inventory)
+    {
+        // Validate all item names in object
+            // If any item names are invalid, display an error message
+            // indicating the existence of an invalid name and include the first invalid name
+
+        // Validate all item serials
+            // If any item serials are invalid, display an error message
+            // indicating the existence of an invalid serial and include the first invalid serial
+
+        // Validate all item values
+            // If any item values are invalid, display an error message
+            // indicating the existence of an invalid name and include the first invalid value
 
         return false;
     }
