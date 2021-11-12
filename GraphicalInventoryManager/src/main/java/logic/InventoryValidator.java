@@ -41,6 +41,22 @@ public class InventoryValidator
         return false;
     }
 
+    public boolean validateAllInputs(String name, String serial, String value)
+    {
+        // Validate name
+        // If invalid, display error message
+
+        // Validate serial
+        // If invalid, display error message
+
+        // Validate value
+        // If invalid, display error message
+
+        // Return false if any validations failed, otherwise return true
+
+        return false;
+    }
+
     private boolean validateInventory(Inventory inventory)
     {
         // Validate all item names in object

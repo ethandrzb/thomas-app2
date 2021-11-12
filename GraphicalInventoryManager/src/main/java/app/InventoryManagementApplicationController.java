@@ -43,19 +43,6 @@ public class InventoryManagementApplicationController
         // If all inputs are valid, create a new inventory item
     }
 
-    private boolean validateAllInputs(String name, String serial, String value)
-    {
-        // Validate name
-
-        // Validate serial
-
-        // Validate value
-
-        // Return false if any validations failed, otherwise return true
-
-        return false;
-    }
-
     public void searchInventory(ActionEvent actionEvent)
     {
         // Generate new predicate to match items in the search criteria (search string and mode)
