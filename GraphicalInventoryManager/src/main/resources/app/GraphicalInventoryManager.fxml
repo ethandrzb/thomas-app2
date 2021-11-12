@@ -61,7 +61,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="375.0" prefWidth="131.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
                   <TextField fx:id="itemNameTextField" prefHeight="25.0" prefWidth="176.0" promptText="Item Name" />
-                  <TextField fx:id="itemSerialNumberTextField" promptText="Serial Number" />
+                  <TextField fx:id="itemSerialTextField" promptText="Serial Number" />
                   <TextField fx:id="itemValueTextField" prefHeight="25.0" prefWidth="89.0" promptText="Value" />
                   <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#addItemButtonPressed" text="Add Item" />
                </children>
@@ -78,8 +78,8 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="630.0">
                      <children>
-                        <TextField fx:id="searchTextField" maxWidth="1.7976931348623157E308" prefWidth="576.0" promptText="Search" />
-                        <Button mnemonicParsing="false" onAction="#searchButtonPressed" prefHeight="25.0" prefWidth="55.0" text="Search" />
+                        <TextField fx:id="searchTextField" maxWidth="1.7976931348623157E308" onAction="#searchInventory" prefWidth="576.0" promptText="Search" />
+                        <Button mnemonicParsing="false" onAction="#searchInventory" prefHeight="25.0" prefWidth="55.0" text="Search" />
                      </children>
                   </HBox>
                   <TableView fx:id="inventoryTableView" editable="true" prefHeight="429.0" prefWidth="632.0">
