@@ -32,21 +32,25 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Sort by">
                <items>
-                  <RadioMenuItem mnemonicParsing="false" text="Date Added">
+                  <RadioMenuItem mnemonicParsing="false" selected="true" text="Date Added">
                      <toggleGroup>
-                        <ToggleGroup fx:id="SortByToggleGroup" />
+                        <ToggleGroup fx:id="sortByToggleGroup" />
                      </toggleGroup>
                   </RadioMenuItem>
-                  <RadioMenuItem mnemonicParsing="false" text="Name" toggleGroup="$SortByToggleGroup" />
-                  <RadioMenuItem mnemonicParsing="false" text="Serial Number" toggleGroup="$SortByToggleGroup" />
-                  <RadioMenuItem mnemonicParsing="false" text="Unspecified Action" toggleGroup="$SortByToggleGroup" />
+                  <RadioMenuItem mnemonicParsing="false" text="Name" toggleGroup="$sortByToggleGroup" />
+                  <RadioMenuItem mnemonicParsing="false" text="Serial Number" toggleGroup="$sortByToggleGroup" />
+                  <RadioMenuItem mnemonicParsing="false" text="Value" toggleGroup="$sortByToggleGroup" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Search by">
-              <items>
-                  <MenuItem mnemonicParsing="false" text="Name" />
-                <MenuItem mnemonicParsing="false" text="Serial Number" />
-              </items>
+               <items>
+                  <RadioMenuItem mnemonicParsing="false" selected="true" text="Name">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="searchByToggleGroup" />
+                     </toggleGroup>
+                  </RadioMenuItem>
+                  <RadioMenuItem mnemonicParsing="false" text="Serial Number" toggleGroup="$searchByToggleGroup" />
+               </items>
             </Menu>
         </menus>
       </MenuBar>
