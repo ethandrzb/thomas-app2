@@ -27,10 +27,15 @@ public class Inventory
         inventoryItems.addAll(items);
     }
 
-    public void addInventoryItem(String name, String serial, double value)
+    public void addItem(String name, String serial, double value)
     {
         // Create new inventory item and add it to the inventory
         inventoryItems.add(new InventoryItem(name, serial, value));
+    }
+
+    public List<InventoryItem> getItems()
+    {
+        return new ArrayList<>(inventoryItems);
     }
 
     public void removeItem(InventoryItem item)

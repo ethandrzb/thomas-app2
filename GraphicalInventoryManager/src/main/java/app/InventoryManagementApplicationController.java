@@ -20,16 +20,13 @@ public class InventoryManagementApplicationController
     private Inventory inventory;
 
     @FXML
-    private TableView<?> inventoryTableView;
-
+    private TableView<InventoryItem> inventoryTableView;
     @FXML
-    public TableColumn<InventoryItem, String> nameTableViewColumn;
-
+    private TableColumn<InventoryItem, String> nameTableViewColumn;
     @FXML
-    public TableColumn<InventoryItem, String> serialTableViewColumn;
-
+    private TableColumn<InventoryItem, String> serialTableViewColumn;
     @FXML
-    public TableColumn<InventoryItem, String> valueTableViewColumn;
+    private TableColumn<InventoryItem, String> valueTableViewColumn;
 
     @FXML
     private TextField itemNameTextField;
@@ -112,6 +109,9 @@ public class InventoryManagementApplicationController
         // Init blank inventory
         inventory = new Inventory();
 
+        inventory.addItem("test item", "A-XXX-XXX-XXX", 12.123);
+        inventory.addItem("item 2", "B-YYY-YYY-YYY", 654.45);
+
         // Init RadioMenuItemEnums
 
         // Select default RadioMenuItem options
@@ -119,21 +119,19 @@ public class InventoryManagementApplicationController
         // Init toggle group change listeners
 
         // Init TableView
+        initTableView();
 
         // Init TableView change listener
     }
 
     private void initTableView()
     {
-        inventoryTableView = new TableView<>();
-
         // Bind table columns to InventoryItem fields
         nameTableViewColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         serialTableViewColumn.setCellValueFactory(new PropertyValueFactory<>("serial"));
-        valueTableViewColumn.setCellValueFactory(new PropertyValueFactory<>("valueInDollars"));
+        valueTableViewColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
-        // Why doesn't this work?
-//        inventoryTableView.getItems().add(new InventoryItem("test item", "A-XXX-XXX-XXX", 12.00));
+        inventoryTableView.getItems().addAll(inventory.getItems());
     }
 
     private void initRadioMenuItemEnums()

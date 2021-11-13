@@ -10,9 +10,9 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class InventoryItem
 {
-    SimpleStringProperty name = new SimpleStringProperty();
-    SimpleStringProperty serial = new SimpleStringProperty();
-    SimpleDoubleProperty value = new SimpleDoubleProperty();
+    private final SimpleStringProperty name = new SimpleStringProperty();
+    private final SimpleStringProperty serial = new SimpleStringProperty();
+    private final SimpleDoubleProperty value = new SimpleDoubleProperty();
 
     public InventoryItem(String name, String serial, double value)
     {
@@ -59,8 +59,8 @@ public class InventoryItem
 
     public String toString()
     {
-        return "Name: " + name + '\n'
-                +  "Serial: " + serial + '\n'
-                + "Value: " + value + '\n';
+        return "Name: " + name.get() + '\n'
+                +  "Serial: " + serial.get() + '\n'
+                + "Value: " + value.get() + '\n';
     }
 }
