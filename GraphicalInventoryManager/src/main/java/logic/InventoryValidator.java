@@ -5,27 +5,33 @@
 
 package logic;
 
+import java.util.HashSet;
+
 public class InventoryValidator
 {
     public boolean isValidItemName(String name)
     {
         // Check if name is empty
-            // If so, return false
+        if(!name.isEmpty())
+        {
             // If not, check if name is between 2 and 256 characters long.
-                // If so, return true
-                // Else, return false
+            return (name.length() >= 2) && (name.length() <= 256);
+        }
 
         return false;
     }
 
-    public boolean isValidSerial(String serial)
+    public boolean isValidSerial(Inventory inventory, String serial)
     {
         // Get set of all serials in use
+        HashSet<String> serialsInUse = (HashSet<String>) inventory.getSerialsInUse();
 
         // Check if serial matches the format A-XXX-XXX-XXX (A must be a letter, X can be a letter or a digit)
-            // If so, check if serial is already in use
-                // If so, return false
-                // If not, return true.
+        // TODO: Debug this regex check
+        if(serial != null && serial.matches("[a-zA-Z](-[a-zA-Z0-9]{3}){3}"))
+        {
+            return serialsInUse.contains(serial);
+        }
 
         return false;
     }
@@ -35,8 +41,12 @@ public class InventoryValidator
     // don't forget to make them display error messages if the input is invalid.
     public boolean isValidMonetaryValue(String monetaryValue)
     {
-        // Check if monetaryValue is a decimal number
-        // with at least one number to the left of the decimal point and two numbers right of it.
+        // Check if monetaryValue is a positive decimal number, possibly with digits to the right of the decimal point.
+
+        if((monetaryValue != null) && (monetaryValue.matches("\\d+\\.?\\d?\\d?")))
+        {
+            return Double.parseDouble(monetaryValue) > 0;
+        }
 
         return false;
     }
