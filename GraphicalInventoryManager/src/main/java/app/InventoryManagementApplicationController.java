@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
-import javafx.util.converter.DoubleStringConverter;
 import logic.Inventory;
 import logic.InventoryItem;
 import logic.InventoryValidator;
@@ -76,9 +75,21 @@ public class InventoryManagementApplicationController
         InventoryValidator validator = new InventoryValidator();
         InventoryItem selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
 
-        if(validator.isValidSerial(inventory, modifiedCell.getNewValue()))
+        String newValue = modifiedCell.getNewValue();
+
+        if(validator.isValidSerialFormat(newValue))
         {
-            selectedItem.setSerial(modifiedCell.getNewValue());
+            if(!inventory.containsSerial(newValue))
+            {
+                selectedItem.setSerial(newValue);
+            }
+            else
+            {
+                displayErrorDialog("Duplicate serial number entered",
+                        "Serial numbers must be unique.");
+                selectedItem.setSerial(modifiedCell.getOldValue());
+                inventoryTableView.refresh();
+            }
         }
         else
         {

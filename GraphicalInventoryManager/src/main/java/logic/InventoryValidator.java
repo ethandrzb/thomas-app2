@@ -21,19 +21,11 @@ public class InventoryValidator
         return false;
     }
 
-    public boolean isValidSerial(Inventory inventory, String serial)
+    // Serial validation split into 2 functions to fulfil requirement for separate error messages
+    // Unique serial check handled by Inventory object
+    public boolean isValidSerialFormat(String serial)
     {
-        // Get set of all serials in use
-        HashSet<String> serialsInUse = (HashSet<String>) inventory.getSerialsInUse();
-
-        // Check if serial matches the format A-XXX-XXX-XXX (A must be a letter, X can be a letter or a digit)
-        // TODO: Debug this regex check
-        if(serial != null && serial.matches("[a-zA-Z](-[a-zA-Z0-9]{3}){3}"))
-        {
-            return serialsInUse.contains(serial);
-        }
-
-        return false;
+        return serial != null && serial.matches("[a-zA-Z](-[a-zA-Z0-9]{3}){3}");
     }
 
     // Might be unnecessary if handled by method in TextField/TableView
