@@ -57,8 +57,6 @@ public class InventoryManagementApplicationController
         }
         else
         {
-            displayErrorDialog("Invalid name entered",
-                    "Name must be between 2 and 256 characters long.");
             selectedItem.setName(modifiedCell.getOldValue());
             inventoryTableView.refresh();
         }
@@ -74,25 +72,12 @@ public class InventoryManagementApplicationController
 
         String newValue = modifiedCell.getNewValue();
 
-        if(validator.isValidSerialFormat(newValue))
+        if(validator.isValidSerial(inventory, newValue, modifiedCell.getOldValue()))
         {
-            if(!inventory.containsSerial(newValue))
-            {
-                selectedItem.setSerial(newValue);
-            }
-            else
-            {
-                displayErrorDialog("Duplicate serial number entered",
-                        "Serial numbers must be unique.");
-                selectedItem.setSerial(modifiedCell.getOldValue());
-                inventoryTableView.refresh();
-            }
+            selectedItem.setSerial(newValue);
         }
         else
         {
-            displayErrorDialog("Invalid serial number entered",
-                    "Serial number must be in the format A-XXX-XXX-XXX" +
-                            " where A is any letter and X can be a letter or a digit.");
             selectedItem.setSerial(modifiedCell.getOldValue());
             inventoryTableView.refresh();
         }
@@ -112,8 +97,6 @@ public class InventoryManagementApplicationController
         }
         else
         {
-            displayErrorDialog("Invalid value entered",
-                    "Value must be decimal number greater than 0.");
             selectedItem.setValue(Double.parseDouble(modifiedCell.getOldValue().toString()));
             inventoryTableView.refresh();
         }
@@ -124,9 +107,26 @@ public class InventoryManagementApplicationController
     @FXML
     public void addItemButtonPressed(ActionEvent event)
     {
-        // Validate all input TextFields
+        InventoryValidator validator = new InventoryValidator();
+
+        String name = itemNameTextField.getText();
+        String serial = itemSerialTextField.getText();
+        String value = itemValueTextField.getText();
 
         // If all inputs are valid, create a new inventory item
+        if(validator.validateAllInputs(inventory, name, serial, value))
+        {
+            inventory.addItem(name, serial, Double.parseDouble(value));
+            clearInputTextFields();
+            inventoryTableView.refresh();
+        }
+    }
+
+    private void clearInputTextFields()
+    {
+        itemNameTextField.clear();
+        itemSerialTextField.clear();
+        itemValueTextField.clear();
     }
 
     @FXML
@@ -167,20 +167,7 @@ public class InventoryManagementApplicationController
         // Remove them from the inventory
     }
 
-    private void displayErrorDialog(String title, String message)
-    {
-        // Create new Alert
-        Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        // Set title
-        alert.setTitle(title);
-
-        // Set content
-        alert.setContentText(message);
-
-        // Show Alert
-        alert.show();
-    }
 
     @FXML
     public void initialize()
