@@ -5,6 +5,7 @@
 
 package app;
 
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -139,6 +140,7 @@ public class InventoryManagementApplicationController
     public void clearInventoryMenuItemSelected(ActionEvent event)
     {
         // Clear inventory
+        inventory.clear();
     }
 
     @FXML
@@ -174,6 +176,12 @@ public class InventoryManagementApplicationController
     {
         // Init blank inventory
         inventory = new Inventory();
+
+        inventory.inventoryItemsProperty().addListener((ListChangeListener<InventoryItem>) c ->
+        {
+            inventoryTableView.getItems().clear();
+            inventoryTableView.getItems().addAll(inventory.inventoryItemsProperty());
+        });
 
         inventory.addItem("item 1", "A-XXX-XXX-XXX", 1200.123);
         inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
@@ -264,9 +272,6 @@ public class InventoryManagementApplicationController
                 }
             }
         });
-
-        // Add data to TableView
-        inventoryTableView.getItems().addAll(inventory.getItems());
     }
 
     private void initRadioMenuItemEnums()

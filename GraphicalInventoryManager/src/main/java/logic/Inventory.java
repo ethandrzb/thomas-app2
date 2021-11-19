@@ -5,18 +5,18 @@
 
 package logic;
 
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.*;
 
 public class Inventory
 {
-    private final ObservableList<InventoryItem> inventoryItems;
+    private final SimpleListProperty<InventoryItem> inventoryItems;
 
     public Inventory()
     {
-        inventoryItems = FXCollections.observableList(new ArrayList<>());
+        inventoryItems = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
     }
 
     public Inventory(List<InventoryItem> items)
@@ -33,9 +33,9 @@ public class Inventory
         inventoryItems.add(new InventoryItem(name, serial, value));
     }
 
-    public List<InventoryItem> getItems()
+    public SimpleListProperty<InventoryItem> inventoryItemsProperty()
     {
-        return new ArrayList<>(inventoryItems);
+        return inventoryItems;
     }
 
     public void removeItem(InventoryItem item)
@@ -63,7 +63,7 @@ public class Inventory
         inventoryItems.removeAll(items);
     }
 
-    public void clearInventory()
+    public void clear()
     {
         // Clear inventory
         inventoryItems.clear();
