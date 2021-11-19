@@ -30,18 +30,6 @@
               <MenuItem mnemonicParsing="false" onAction="#clearInventoryMenuItemSelected" text="Clear inventory" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Sort by">
-               <items>
-                  <RadioMenuItem mnemonicParsing="false" selected="true" text="Date Added">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="sortByToggleGroup" />
-                     </toggleGroup>
-                  </RadioMenuItem>
-                  <RadioMenuItem mnemonicParsing="false" text="Name" toggleGroup="$sortByToggleGroup" />
-                  <RadioMenuItem mnemonicParsing="false" text="Serial Number" toggleGroup="$sortByToggleGroup" />
-                  <RadioMenuItem mnemonicParsing="false" text="Value" toggleGroup="$sortByToggleGroup" />
-               </items>
-            </Menu>
             <Menu mnemonicParsing="false" text="Search by">
                <items>
                   <RadioMenuItem mnemonicParsing="false" selected="true" text="Name">

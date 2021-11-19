@@ -45,9 +45,6 @@ public class InventoryManagementApplicationController
     @FXML
     private TextField searchTextField;
 
-    @FXML
-    private ToggleGroup sortByToggleGroup;
-
     // Syncs an InventoryItem's name field to the corresponding TableView cell
     public void changeNameCellEvent(TableColumn.CellEditEvent<InventoryItem, String> modifiedCell)
     {
@@ -69,7 +66,7 @@ public class InventoryManagementApplicationController
         System.out.println(selectedItem);
     }
 
-    // Syncs an InventoryItem's name field to the corresponding TableView cell
+    // Syncs an InventoryItem's serial field to the corresponding TableView cell
     public void changeSerialCellEvent(TableColumn.CellEditEvent<InventoryItem, String> modifiedCell)
     {
         InventoryValidator validator = new InventoryValidator();
@@ -191,8 +188,9 @@ public class InventoryManagementApplicationController
         // Init blank inventory
         inventory = new Inventory();
 
-        inventory.addItem("test item", "A-XXX-XXX-XXX", 12.123);
-        inventory.addItem("item 2", "B-YYY-YYY-YYY", 654.45);
+        inventory.addItem("item 1", "A-XXX-XXX-XXX", 1200.123);
+        inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
+        inventory.addItem("item 3", "A-XXX-XXX-XXV", 9.09);
 
         // Init RadioMenuItemEnums
 
@@ -286,8 +284,6 @@ public class InventoryManagementApplicationController
 
     private void initRadioMenuItemEnums()
     {
-        // Init sort mode RadioMenuItem enums (unnecessary if implemented via TableView)
-
         // Init search mode RadioMenuItem enums
     }
 }
