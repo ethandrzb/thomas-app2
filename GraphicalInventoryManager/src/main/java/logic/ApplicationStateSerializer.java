@@ -5,8 +5,16 @@
 
 package logic;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 // https://stackoverflow.com/questions/54400414/how-to-convert-a-java-object-into-an-html-table/54400838
 // http://scrumbucket.org/converting-a-pojo-into-html/
@@ -17,17 +25,26 @@ public class ApplicationStateSerializer
 {
     // Add enum for each supported file extension
 
-    public Inventory loadInventory(Path path)
+    public Inventory loadInventory(File file) throws IOException
     {
-        // Get file extension from path and call appropriate load function
-        // *.txt ==> loadFromTSV
-        // *.html ==> loadFromHTML
-        // *.json ==> loadFromJSON
+        InventoryValidator validator = new InventoryValidator();
+
+        // Get file extension from path
+        String extension = file.toString().split("\\.")[1].toLowerCase();
+
+        // Call appropriate load function
+        Inventory inventory = switch(extension)
+        {
+            case "txt" -> loadFromTSV(file);
+            case "html" -> loadFromHTML(file);
+            case "json" -> loadFromJSON(file);
+
+            default -> throw new UnsupportedOperationException();
+        };
 
         // Validate loaded inventory
-            // If any validations fail, throw an IllegalArgumentException
-
-        return null;
+        // Return null if inventory is invalid
+        return validator.validateInventory(inventory) ? inventory : null;
     }
 
     public Inventory loadFromTSV(File file)
@@ -57,11 +74,41 @@ public class ApplicationStateSerializer
         return null;
     }
 
-    public Inventory loadFromHTML(File file)
+    public Inventory loadFromHTML(File file) throws IOException
     {
-        // Attempt to open file
+        try
+        {
+            // Attempt to open file
+            Document doc = Jsoup.parse(file, "UTF-8", "");
 
-        // Attempt to parse HTML with htmltopojo library
+            // Get table rows
+            Elements rows = doc.select("tr");
+
+            for(Element row : rows)
+            {
+                Elements columns = row.select("td");
+
+                if(!columns.isEmpty())
+                {
+                    System.out.println("Name: " + columns.get(0).text());
+                    System.out.println("Serial: " + columns.get(1).text());
+                    System.out.println("Value: " + columns.get(2).text());
+                    System.out.println();
+                }
+
+//                for (Element column : columns)
+//                {
+//                    System.out.print(column.text() + " ");
+//                }
+//
+//                System.out.println();
+            }
+        }
+        catch (IOException e)
+        {
+            System.err.println("Unable to open file at " + file.getAbsolutePath());
+            throw new IOException();
+        }
 
         return null;
     }

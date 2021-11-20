@@ -12,12 +12,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import logic.ApplicationStateSerializer;
 import logic.Inventory;
 import logic.InventoryItem;
 import logic.InventoryValidator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.NumberFormat;
 
 public class InventoryManagementApplicationController
@@ -160,11 +165,36 @@ public class InventoryManagementApplicationController
     @FXML
     public void loadMenuItemSelected(ActionEvent event)
     {
+        Inventory loadedInventory = inventory;
+        ApplicationStateSerializer serializer = new ApplicationStateSerializer();
+
         // Display FileChooser to get path to source inventory
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("TSV Files", "*.txt"),
+                new FileChooser.ExtensionFilter("HTML Files", "*.html"),
+                new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+
+        File chosenFile = fileChooser.showOpenDialog(inventoryTableView.getScene().getWindow());
+
+        // User closed FileChooser without selecting a file
+        if(chosenFile == null)
+        {
+            return;
+        }
 
         // Import inventory
+        try
+        {
+            loadedInventory = serializer.loadInventory(chosenFile);
+        }
+        catch(IOException | UnsupportedOperationException e)
+        {
+            System.out.println("Unable to open inventory");
+        }
 
-        // Clear current inventory
+        // Replace current inventory with imported inventory
+        inventory = loadedInventory;
     }
 
     @FXML
@@ -205,9 +235,11 @@ public class InventoryManagementApplicationController
                 }));
 
         // Init TableView change listener
+        // TODO: Redeclare this listener in loadMenuItemSelected after an inventory has successfully been loaded from a file
         inventory.inventoryItemsProperty().addListener((ListChangeListener<InventoryItem>) c ->
                 inventoryTableView.setItems(filteredList));
 
+        // Dummy data
         inventory.addItem("item 1", "A-XXX-XXX-XXX", 1200.123);
         inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
         inventory.addItem("item 3", "A-XXX-XXX-XXV", 9.09);
@@ -330,6 +362,7 @@ public class InventoryManagementApplicationController
                 }
                 else
                 {
+
                     setText(currencyFormat.format(price));
                 }
             }

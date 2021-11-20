@@ -89,8 +89,10 @@ public class InventoryValidator
         return isValidItemName(name) && isValidSerial(inventory, serial, "") && isValidMonetaryValue(value);
     }
 
-    private boolean validateInventory(Inventory inventory)
+    public boolean validateInventory(Inventory inventory)
     {
+        //TODO: Implement this method
+
         // Validate all item names in object
             // If any item names are invalid, display an error message
             // indicating the existence of an invalid name and include the first invalid name
@@ -103,7 +105,7 @@ public class InventoryValidator
             // If any item values are invalid, display an error message
             // indicating the existence of an invalid name and include the first invalid value
 
-        return false;
+        return true;
     }
 
     private void displayErrorDialog(String title, String message)
