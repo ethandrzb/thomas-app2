@@ -39,10 +39,13 @@ public class InventoryManagementApplicationController
 
     @FXML
     private TableView<InventoryItem> inventoryTableView;
+
     @FXML
     private TableColumn<InventoryItem, String> nameTableViewColumn;
+
     @FXML
     private TableColumn<InventoryItem, String> serialTableViewColumn;
+
     @FXML
     private TableColumn<InventoryItem, Double> valueTableViewColumn;
 
@@ -115,7 +118,7 @@ public class InventoryManagementApplicationController
     }
 
     @FXML
-    public void addItemButtonPressed(ActionEvent event)
+    public void addItemButtonPressed()
     {
         InventoryValidator validator = new InventoryValidator();
 
@@ -140,13 +143,7 @@ public class InventoryManagementApplicationController
     }
 
     @FXML
-    public void searchInventory(ActionEvent event)
-    {
-        // Generate new predicate to match items in the search criteria (search string and mode)
-    }
-
-    @FXML
-    public void clearInventoryMenuItemSelected(ActionEvent event)
+    public void clearInventoryMenuItemSelected()
     {
         // Clear inventory
         inventory.clear();
@@ -171,10 +168,8 @@ public class InventoryManagementApplicationController
     }
 
     @FXML
-    public void removeSelectedItemsMenuItemSelected(ActionEvent event)
+    public void removeSelectedItemsMenuItemSelected()
     {
-        // Get list of currently selected items in TableView
-
         // Remove them from the inventory
         inventory.removeItems(inventoryTableView.getSelectionModel().getSelectedItems());
     }
