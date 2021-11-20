@@ -86,7 +86,7 @@ public class InventoryValidator
 
         // Return false if any validations failed, otherwise return true
 
-        return isValidItemName(name) && isValidSerial(inventory, serial, serial) && isValidMonetaryValue(value);
+        return isValidItemName(name) && isValidSerial(inventory, serial, "") && isValidMonetaryValue(value);
     }
 
     private boolean validateInventory(Inventory inventory)
