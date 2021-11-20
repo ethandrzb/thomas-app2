@@ -167,6 +167,7 @@ public class InventoryManagementApplicationController
         // Get list of currently selected items in TableView
 
         // Remove them from the inventory
+        inventory.removeItems(inventoryTableView.getSelectionModel().getSelectedItems());
     }
 
 
@@ -177,6 +178,7 @@ public class InventoryManagementApplicationController
         // Init blank inventory
         inventory = new Inventory();
 
+        // Init TableView change listener
         inventory.inventoryItemsProperty().addListener((ListChangeListener<InventoryItem>) c ->
         {
             inventoryTableView.getItems().clear();
@@ -189,14 +191,10 @@ public class InventoryManagementApplicationController
 
         // Init RadioMenuItemEnums
 
-        // Select default RadioMenuItem options
-
         // Init toggle group change listeners
 
         // Init TableView
         initTableView();
-
-        // Init TableView change listener
     }
 
     private void initTableView()

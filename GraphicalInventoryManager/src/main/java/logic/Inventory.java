@@ -38,12 +38,6 @@ public class Inventory
         return inventoryItems;
     }
 
-    public void removeItem(InventoryItem item)
-    {
-        // Remove item from inventory
-        inventoryItems.remove(item);
-    }
-
     public boolean containsSerial(String serial)
     {
         HashSet<String> serialsInUse = new HashSet<>();
@@ -57,7 +51,7 @@ public class Inventory
         return serialsInUse.contains(serial);
     }
 
-    public void removeMultipleItems(List<InventoryItem> items)
+    public void removeItems(List<InventoryItem> items)
     {
         // Remove all items in items from inventoryItems
         inventoryItems.removeAll(items);
