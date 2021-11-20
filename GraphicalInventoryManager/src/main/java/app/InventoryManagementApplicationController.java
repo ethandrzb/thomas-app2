@@ -205,8 +205,6 @@ public class InventoryManagementApplicationController
         // Init search mode ComboBox
         initSearchModeComboBox();
 
-        // TODO: Move searchModeComboBox listener initialization to separate method called here
-
         // Init TableView
         initTableView();
     }
@@ -295,27 +293,8 @@ public class InventoryManagementApplicationController
         // Select NAME by default
         searchModeComboBox.getSelectionModel().select(searchByOption.NAME);
 
-        // Create CellFactory for ComboBox that uses the String stored in the searchByOption enum
-        // instead of the name of the enum itself
-        Callback<ListView<searchByOption>, ListCell<searchByOption>> searchModeComboBoxCellFactory =
-                param -> new ListCell<>()
-        {
-            @Override
-            protected void updateItem(searchByOption item, boolean empty)
-            {
-                super.updateItem(item, empty);
-
-                if (item != null && !empty) {
-                    setText(item.optionText);
-                }
-            }
-        };
-
-        // Apply CellFactory to ComboBox button
-        searchModeComboBox.setButtonCell(searchModeComboBoxCellFactory.call(null));
-
-        // Apply CellFactory to ComboBox options
-        searchModeComboBox.setCellFactory(searchModeComboBoxCellFactory);
+        // Use human-readable option names instead of enum names
+        initCustomComboBoxOptionText();
 
         // Add change listener to ComboBox
         searchModeComboBox.setOnAction((event ->
@@ -324,5 +303,30 @@ public class InventoryManagementApplicationController
             selectedSearchOption = searchModeComboBox.getSelectionModel().getSelectedItem();
             System.out.println(selectedSearchOption);
         }));
+    }
+
+    private void initCustomComboBoxOptionText()
+    {
+        // Create CellFactory for ComboBox that uses the String stored in the searchByOption enum
+        // instead of the name of the enum itself
+        Callback<ListView<searchByOption>, ListCell<searchByOption>> searchModeComboBoxCellFactory =
+                param -> new ListCell<>()
+                {
+                    @Override
+                    protected void updateItem(searchByOption item, boolean empty)
+                    {
+                        super.updateItem(item, empty);
+
+                        if (item != null && !empty) {
+                            setText(item.optionText);
+                        }
+                    }
+                };
+
+        // Apply CellFactory to ComboBox button
+        searchModeComboBox.setButtonCell(searchModeComboBoxCellFactory.call(null));
+
+        // Apply CellFactory to ComboBox options
+        searchModeComboBox.setCellFactory(searchModeComboBoxCellFactory);
     }
 }
