@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import logic.Inventory;
 import logic.InventoryItem;
@@ -20,6 +21,19 @@ import java.text.NumberFormat;
 
 public class InventoryManagementApplicationController
 {
+    private enum searchByOption
+    {
+        NAME("By Name"), SERIAL("By Serial");
+
+        private final String optionText;
+
+        searchByOption(String optionText)
+        {
+            this.optionText = optionText;
+        }
+    }
+    private searchByOption selectedSearchOption = searchByOption.NAME;
+
     private Inventory inventory;
 
     @FXML
@@ -42,6 +56,9 @@ public class InventoryManagementApplicationController
 
     @FXML
     private ToggleGroup searchByToggleGroup;
+
+    @FXML
+    private ComboBox<searchByOption> searchModeComboBox;
 
     @FXML
     private TextField searchTextField;
@@ -189,6 +206,9 @@ public class InventoryManagementApplicationController
         inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
         inventory.addItem("item 3", "A-XXX-XXX-XXV", 9.09);
 
+        // Init search mode ComboBox
+        initSearchModeComboBox();
+
         // Init RadioMenuItemEnums
 
         // Init toggle group change listeners
@@ -272,8 +292,43 @@ public class InventoryManagementApplicationController
         });
     }
 
-    private void initRadioMenuItemEnums()
+    private void initSearchModeComboBox()
     {
-        // Init search mode RadioMenuItem enums
+        // Add options to ComboBox
+        searchModeComboBox.getItems().add(searchByOption.NAME);
+        searchModeComboBox.getItems().add(searchByOption.SERIAL);
+
+        // Select NAME by default
+        searchModeComboBox.getSelectionModel().select(searchByOption.NAME);
+
+        // Create CellFactory for ComboBox that uses the String stored in the searchByOption enum
+        // instead of the name of the enum itself
+        Callback<ListView<searchByOption>, ListCell<searchByOption>> searchModeComboBoxCellFactory =
+                param -> new ListCell<>()
+        {
+            @Override
+            protected void updateItem(searchByOption item, boolean empty)
+            {
+                super.updateItem(item, empty);
+
+                if (item != null && !empty) {
+                    setText(item.optionText);
+                }
+            }
+        };
+
+        // Apply CellFactory to ComboBox button
+        searchModeComboBox.setButtonCell(searchModeComboBoxCellFactory.call(null));
+
+        // Apply CellFactory to ComboBox options
+        searchModeComboBox.setCellFactory(searchModeComboBoxCellFactory);
+
+        // Add change listener to ComboBox
+        searchModeComboBox.setOnAction((event ->
+        {
+            // TODO: Make this event handler refresh the FilteredList
+            selectedSearchOption = searchModeComboBox.getSelectionModel().getSelectedItem();
+            System.out.println(selectedSearchOption);
+        }));
     }
 }
