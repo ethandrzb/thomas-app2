@@ -6,6 +6,7 @@
 package app;
 
 import javafx.collections.ListChangeListener;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -75,8 +76,6 @@ public class InventoryManagementApplicationController
             selectedItem.setName(modifiedCell.getOldValue());
             inventoryTableView.refresh();
         }
-
-        System.out.println(selectedItem);
     }
 
     // Syncs an InventoryItem's serial field to the corresponding TableView cell
@@ -96,8 +95,6 @@ public class InventoryManagementApplicationController
             selectedItem.setSerial(modifiedCell.getOldValue());
             inventoryTableView.refresh();
         }
-
-        System.out.println(selectedItem);
     }
 
     // Syncs an InventoryItem's value field to the corresponding TableView cell
@@ -115,8 +112,6 @@ public class InventoryManagementApplicationController
             selectedItem.setValue(Double.parseDouble(modifiedCell.getOldValue().toString()));
             inventoryTableView.refresh();
         }
-
-        System.out.println(selectedItem);
     }
 
     @FXML
@@ -184,19 +179,39 @@ public class InventoryManagementApplicationController
         inventory.removeItems(inventoryTableView.getSelectionModel().getSelectedItems());
     }
 
-
     @FXML
     public void initialize()
     {
         // Init blank inventory
         inventory = new Inventory();
 
+        // Wrap all inventory items in FilteredList for search function
+        FilteredList<InventoryItem> filteredList = new FilteredList<>(inventory.inventoryItemsProperty());
+
+        // Display all items by default (no filtering)
+        filteredList.setPredicate(i -> true);
+
+        // Add listener to search TextField to update search criteria
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) ->
+                filteredList.setPredicate(i ->
+                {
+                    // Display all items when nothing is entered in search box
+                    if(newValue == null || newValue.isEmpty())
+                    {
+                        return true;
+                    }
+
+                    // Case INSENSITIVE searching
+                    return switch(selectedSearchOption)
+                    {
+                        case NAME -> i.getName().toUpperCase().contains(newValue.toUpperCase());
+                        case SERIAL -> i.getSerial().toUpperCase().contains(newValue.toUpperCase());
+                    };
+                }));
+
         // Init TableView change listener
         inventory.inventoryItemsProperty().addListener((ListChangeListener<InventoryItem>) c ->
-        {
-            inventoryTableView.getItems().clear();
-            inventoryTableView.getItems().addAll(inventory.inventoryItemsProperty());
-        });
+                inventoryTableView.setItems(filteredList));
 
         inventory.addItem("item 1", "A-XXX-XXX-XXX", 1200.123);
         inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
@@ -207,6 +222,48 @@ public class InventoryManagementApplicationController
 
         // Init TableView
         initTableView();
+    }
+
+    private void initSearchModeComboBox()
+    {
+        // Add options to ComboBox
+        searchModeComboBox.getItems().add(searchByOption.NAME);
+        searchModeComboBox.getItems().add(searchByOption.SERIAL);
+
+        // Select NAME by default
+        searchModeComboBox.getSelectionModel().select(searchByOption.NAME);
+
+        // Use human-readable option names instead of enum names
+        initCustomComboBoxOptionText();
+
+        // Add change listener to ComboBox
+        searchModeComboBox.setOnAction((event ->
+                selectedSearchOption = searchModeComboBox.getSelectionModel().getSelectedItem()));
+    }
+
+    private void initCustomComboBoxOptionText()
+    {
+        // Create CellFactory for ComboBox that uses the String stored in the searchByOption enum
+        // instead of the name of the enum itself
+        Callback<ListView<searchByOption>, ListCell<searchByOption>> searchModeComboBoxCellFactory =
+                param -> new ListCell<>()
+                {
+                    @Override
+                    protected void updateItem(searchByOption item, boolean empty)
+                    {
+                        super.updateItem(item, empty);
+
+                        if (item != null && !empty) {
+                            setText(item.optionText);
+                        }
+                    }
+                };
+
+        // Apply CellFactory to ComboBox button
+        searchModeComboBox.setButtonCell(searchModeComboBoxCellFactory.call(null));
+
+        // Apply CellFactory to ComboBox options
+        searchModeComboBox.setCellFactory(searchModeComboBoxCellFactory);
     }
 
     private void initTableView()
@@ -282,51 +339,5 @@ public class InventoryManagementApplicationController
                 }
             }
         });
-    }
-
-    private void initSearchModeComboBox()
-    {
-        // Add options to ComboBox
-        searchModeComboBox.getItems().add(searchByOption.NAME);
-        searchModeComboBox.getItems().add(searchByOption.SERIAL);
-
-        // Select NAME by default
-        searchModeComboBox.getSelectionModel().select(searchByOption.NAME);
-
-        // Use human-readable option names instead of enum names
-        initCustomComboBoxOptionText();
-
-        // Add change listener to ComboBox
-        searchModeComboBox.setOnAction((event ->
-        {
-            // TODO: Make this event handler refresh the FilteredList
-            selectedSearchOption = searchModeComboBox.getSelectionModel().getSelectedItem();
-            System.out.println(selectedSearchOption);
-        }));
-    }
-
-    private void initCustomComboBoxOptionText()
-    {
-        // Create CellFactory for ComboBox that uses the String stored in the searchByOption enum
-        // instead of the name of the enum itself
-        Callback<ListView<searchByOption>, ListCell<searchByOption>> searchModeComboBoxCellFactory =
-                param -> new ListCell<>()
-                {
-                    @Override
-                    protected void updateItem(searchByOption item, boolean empty)
-                    {
-                        super.updateItem(item, empty);
-
-                        if (item != null && !empty) {
-                            setText(item.optionText);
-                        }
-                    }
-                };
-
-        // Apply CellFactory to ComboBox button
-        searchModeComboBox.setButtonCell(searchModeComboBoxCellFactory.call(null));
-
-        // Apply CellFactory to ComboBox options
-        searchModeComboBox.setCellFactory(searchModeComboBoxCellFactory);
     }
 }
