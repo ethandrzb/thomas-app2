@@ -55,8 +55,7 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="630.0">
                      <children>
-                        <TextField fx:id="searchTextField" maxWidth="1.7976931348623157E308" onAction="#searchInventory" prefHeight="25.0" prefWidth="416.0" promptText="Search" HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#searchInventory" prefHeight="25.0" prefWidth="55.0" text="Search" />
+                        <TextField fx:id="searchTextField" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="416.0" promptText="Search" HBox.hgrow="ALWAYS" />
                         <ComboBox fx:id="searchModeComboBox" prefHeight="25.0" prefWidth="115.0" promptText="Search By" />
                      </children>
                   </HBox>
