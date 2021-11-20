@@ -55,9 +55,6 @@ public class InventoryManagementApplicationController
     private TextField itemValueTextField;
 
     @FXML
-    private ToggleGroup searchByToggleGroup;
-
-    @FXML
     private ComboBox<searchByOption> searchModeComboBox;
 
     @FXML
@@ -188,7 +185,6 @@ public class InventoryManagementApplicationController
     }
 
 
-
     @FXML
     public void initialize()
     {
@@ -209,9 +205,7 @@ public class InventoryManagementApplicationController
         // Init search mode ComboBox
         initSearchModeComboBox();
 
-        // Init RadioMenuItemEnums
-
-        // Init toggle group change listeners
+        // TODO: Move searchModeComboBox listener initialization to separate method called here
 
         // Init TableView
         initTableView();
