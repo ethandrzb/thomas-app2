@@ -40,7 +40,7 @@ public class ApplicationStateSerializer
         };
     }
 
-    public Inventory loadFromTSV(File file) throws IOException
+    private Inventory loadFromTSV(File file) throws IOException
     {
         Inventory inventory = new Inventory();
         InventoryValidator validator = new InventoryValidator();
@@ -93,7 +93,7 @@ public class ApplicationStateSerializer
         return inventory;
     }
 
-    public Inventory loadFromHTML(File file) throws IOException
+    private Inventory loadFromHTML(File file) throws IOException
     {
         Inventory inventory = new Inventory();
         InventoryValidator validator = new InventoryValidator();
@@ -155,7 +155,7 @@ public class ApplicationStateSerializer
         return currency;
     }
 
-    public Inventory loadFromJSON(File file) throws IOException
+    private Inventory loadFromJSON(File file) throws IOException
     {
         Inventory inventory;
         Gson gson = FxGson.create();
@@ -190,7 +190,7 @@ public class ApplicationStateSerializer
         }
     }
 
-    public void saveToTSV(Inventory inventory, File file) throws FileNotFoundException
+    private void saveToTSV(Inventory inventory, File file) throws FileNotFoundException
     {
         final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 
@@ -217,7 +217,7 @@ public class ApplicationStateSerializer
         }
     }
 
-    public void saveToHTML(Inventory inventory, File file) throws FileNotFoundException
+    private void saveToHTML(Inventory inventory, File file) throws FileNotFoundException
     {
         final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 
@@ -284,7 +284,7 @@ public class ApplicationStateSerializer
         }
     }
 
-    public void saveToJSON(Inventory inventory, File file) throws FileNotFoundException
+    private void saveToJSON(Inventory inventory, File file) throws FileNotFoundException
     {
         Gson gson = FxGson.create();
 
