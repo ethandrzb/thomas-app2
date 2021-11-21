@@ -103,7 +103,7 @@ class InventoryTest
         String[] expected = """
                 Name: item 1
                 Serial: A-XXX-XXX-XXX
-                Value: 1200.123
+                Value: 1200.12
                                 
                 Name: item 2
                 Serial: A-XXX-XXX-XXW
