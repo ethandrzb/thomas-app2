@@ -22,13 +22,11 @@ public class ApplicationStateSerializer
 {
     public Inventory loadInventory(File file) throws IOException
     {
-        InventoryValidator validator = new InventoryValidator();
-
         // Get file extension from path
         String extension = file.toString().split("\\.")[1].toLowerCase();
 
         // Call appropriate load function
-        Inventory inventory = switch(extension)
+        return switch(extension)
         {
             case "txt" -> loadFromTSV(file);
             case "html" -> loadFromHTML(file);
@@ -36,10 +34,6 @@ public class ApplicationStateSerializer
 
             default -> throw new UnsupportedOperationException();
         };
-
-        // Validate loaded inventory
-        // Return null if inventory is invalid
-        return validator.validateInventory(inventory) ? inventory : null;
     }
 
     public Inventory loadFromTSV(File file)
