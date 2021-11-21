@@ -8,7 +8,6 @@ package app;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -156,7 +155,7 @@ public class InventoryManagementApplicationController
     }
 
     @FXML
-    public void saveMenuItemSelected(ActionEvent event)
+    public void saveMenuItemSelected()
     {
         ApplicationStateSerializer serializer = new ApplicationStateSerializer();
 
@@ -176,7 +175,8 @@ public class InventoryManagementApplicationController
         }
         catch(FileNotFoundException | UnsupportedOperationException e)
         {
-            System.err.println("Unable to export inventory to " + chosenFile);
+            displayErrorDialog("Failed to export inventory to requested file",
+                    "Please check the file to which you are attempting to save the inventory and try again.");
         }
     }
 
@@ -207,6 +207,10 @@ public class InventoryManagementApplicationController
             }
             else
             {
+                displayErrorDialog("Unable to load inventory",
+                        "One or more validations failed while attempting " +
+                                "to load an inventory from the requested file.");
+
                 return;
             }
 
@@ -215,7 +219,8 @@ public class InventoryManagementApplicationController
         }
         catch(IOException | UnsupportedOperationException e)
         {
-            System.err.println("Unable to open inventory at " + chosenFile);
+            displayErrorDialog("Failed to load requested file",
+                    "Please check the file you are attempting to load and try again.");
         }
     }
 
@@ -415,5 +420,20 @@ public class InventoryManagementApplicationController
                 }
             }
         });
+    }
+
+    private void displayErrorDialog(String title, String message)
+    {
+        // Create new Alert
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        // Set title
+        alert.setTitle(title);
+
+        // Set content
+        alert.setContentText(message);
+
+        // Show Alert
+        alert.show();
     }
 }
