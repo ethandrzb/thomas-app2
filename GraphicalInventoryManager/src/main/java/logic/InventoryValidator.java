@@ -9,6 +9,18 @@ import javafx.scene.control.Alert;
 
 public class InventoryValidator
 {
+    private boolean errorDialogsEnabled = true;
+
+    public boolean getErrorDialogsEnabled()
+    {
+        return errorDialogsEnabled;
+    }
+
+    public void setErrorDialogsEnabled(boolean errorDialogsEnabled)
+    {
+        this.errorDialogsEnabled = errorDialogsEnabled;
+    }
+
     public boolean isValidItemName(String name)
     {
         // Check if is between 2 and 256 characters long.
@@ -24,7 +36,6 @@ public class InventoryValidator
     }
 
     // Serial validation split into 2 functions to fulfil requirement for separate error messages
-    // Unique serial check handled by Inventory object
     private boolean isValidSerialFormat(String serial)
     {
         return serial != null && serial.matches("[a-zA-Z](-[a-zA-Z0-9]{3}){3}");
@@ -54,9 +65,6 @@ public class InventoryValidator
         }
     }
 
-    // Might be unnecessary if handled by method in TextField/TableView
-    // If you do choose to use one of those methods,
-    // don't forget to make them display error messages if the input is invalid.
     public boolean isValidMonetaryValue(String monetaryValue)
     {
         // Check if monetaryValue is a positive decimal number, possibly with digits to the right of the decimal point.
@@ -82,6 +90,11 @@ public class InventoryValidator
 
     private void displayErrorDialog(String title, String message)
     {
+        if(!errorDialogsEnabled)
+        {
+            return;
+        }
+
         // Create new Alert
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
