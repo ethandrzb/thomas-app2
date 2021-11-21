@@ -348,6 +348,9 @@ public class InventoryManagementApplicationController
         // Allow multiple rows to be selected
         inventoryTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        // Edit empty table placeholder text
+        inventoryTableView.setPlaceholder(new Label("No items in inventory."));
+
         // Make columns editable
         nameTableViewColumn.setEditable(true);
         serialTableViewColumn.setEditable(true);
