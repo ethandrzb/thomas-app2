@@ -75,37 +75,9 @@ public class InventoryValidator
 
     public boolean validateAllInputs(Inventory inventory, String name, String serial, String value)
     {
-        // Validate name
-        // If invalid, display error message
-
-        // Validate serial
-        // If invalid, display error message
-
-        // Validate value
-        // If invalid, display error message
-
         // Return false if any validations failed, otherwise return true
 
         return isValidItemName(name) && isValidSerial(inventory, serial, "") && isValidMonetaryValue(value);
-    }
-
-    public boolean validateInventory(Inventory inventory)
-    {
-        //TODO: Implement this method
-
-        // Validate all item names in object
-            // If any item names are invalid, display an error message
-            // indicating the existence of an invalid name and include the first invalid name
-
-        // Validate all item serials
-            // If any item serials are invalid, display an error message
-            // indicating the existence of an invalid serial and include the first invalid serial
-
-        // Validate all item values
-            // If any item values are invalid, display an error message
-            // indicating the existence of an invalid name and include the first invalid value
-
-        return true;
     }
 
     private void displayErrorDialog(String title, String message)

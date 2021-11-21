@@ -11,20 +11,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Scanner;
 
+// TODO: Remove these links
 // https://stackoverflow.com/questions/54400414/how-to-convert-a-java-object-into-an-html-table/54400838
 // http://scrumbucket.org/converting-a-pojo-into-html/
 // http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ReflectionToStringBuilder.html
-// https://github.com/whimtrip/jwht-htmltopojo
 
 public class ApplicationStateSerializer
 {
-    // Add enum for each supported file extension
-
     public Inventory loadInventory(File file) throws IOException
     {
         InventoryValidator validator = new InventoryValidator();
@@ -76,6 +71,13 @@ public class ApplicationStateSerializer
 
     public Inventory loadFromHTML(File file) throws IOException
     {
+        Inventory inventory = new Inventory();
+        InventoryValidator validator = new InventoryValidator();
+
+        String name;
+        String serial;
+        String value;
+
         try
         {
             // Attempt to open file
@@ -90,18 +92,21 @@ public class ApplicationStateSerializer
 
                 if(!columns.isEmpty())
                 {
-                    System.out.println("Name: " + columns.get(0).text());
-                    System.out.println("Serial: " + columns.get(1).text());
-                    System.out.println("Value: " + columns.get(2).text());
-                    System.out.println();
-                }
+                    // Load data from current table row
+                    name = columns.get(0).text();
+                    serial = columns.get(1).text();
+                    value = currencyToNumericalString(columns.get(2).text());
 
-//                for (Element column : columns)
-//                {
-//                    System.out.print(column.text() + " ");
-//                }
-//
-//                System.out.println();
+                    // Validate inputs before attempting to add the item to the inventory
+                    if(validator.validateAllInputs(inventory, name, serial, value))
+                    {
+                        inventory.addItem(name, serial, Double.parseDouble(value));
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
             }
         }
         catch (IOException e)
@@ -110,7 +115,21 @@ public class ApplicationStateSerializer
             throw new IOException();
         }
 
-        return null;
+        return inventory;
+    }
+
+    private String currencyToNumericalString(String currency)
+    {
+        // Remove dollar sign from value, if it exists
+        if(currency.startsWith("$"))
+        {
+            currency = currency.substring(1);
+        }
+
+        // Remove commas, if they exist
+        currency = currency.replace(",", "");
+
+        return currency;
     }
 
     public Inventory loadFromJSON(File file)

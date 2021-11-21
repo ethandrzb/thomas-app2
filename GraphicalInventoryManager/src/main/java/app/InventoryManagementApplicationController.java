@@ -7,6 +7,7 @@ package app;
 
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -21,7 +22,6 @@ import logic.InventoryItem;
 import logic.InventoryValidator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
 
@@ -163,9 +163,9 @@ public class InventoryManagementApplicationController
     }
 
     @FXML
-    public void loadMenuItemSelected(ActionEvent event)
+    public void loadMenuItemSelected()
     {
-        Inventory loadedInventory = inventory;
+        Inventory loadedInventory;
         ApplicationStateSerializer serializer = new ApplicationStateSerializer();
 
         // Display FileChooser to get path to source inventory
@@ -183,18 +183,28 @@ public class InventoryManagementApplicationController
             return;
         }
 
-        // Import inventory
         try
         {
+            // Attempt to import inventory
             loadedInventory = serializer.loadInventory(chosenFile);
+
+            // Replace current inventory with imported inventory
+            if(loadedInventory != null)
+            {
+                inventory = loadedInventory;
+            }
+            else
+            {
+                return;
+            }
+
+            // Reattach TableView sorting and filtering
+            initSortableFilteredListAndSearchFunction();
         }
         catch(IOException | UnsupportedOperationException e)
         {
             System.out.println("Unable to open inventory");
         }
-
-        // Replace current inventory with imported inventory
-        inventory = loadedInventory;
     }
 
     @FXML
@@ -209,6 +219,25 @@ public class InventoryManagementApplicationController
     {
         // Init blank inventory
         inventory = new Inventory();
+
+        // Initialize filtered list and associated listeners
+        initSortableFilteredListAndSearchFunction();
+
+        // Dummy data
+        inventory.addItem("item 1", "A-XXX-XXX-XXX", 1200.123);
+        inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
+        inventory.addItem("item 3", "A-XXX-XXX-XXV", 9.09);
+
+        // Init search mode ComboBox
+        initSearchModeComboBox();
+
+        // Init TableView
+        initTableView();
+    }
+
+    private void initSortableFilteredListAndSearchFunction()
+    {
+        SortedList<InventoryItem> sortedFilteredList;
 
         // Wrap all inventory items in FilteredList for search function
         FilteredList<InventoryItem> filteredList = new FilteredList<>(inventory.inventoryItemsProperty());
@@ -233,22 +262,17 @@ public class InventoryManagementApplicationController
                         case SERIAL -> i.getSerial().toUpperCase().contains(newValue.toUpperCase());
                     };
                 }));
+        // Reinitialize TableView sort function
+        // Wrapping the data in a FilteredList removed the TableView's ability to sort it
+        sortedFilteredList = new SortedList<>(filteredList);
+        sortedFilteredList.comparatorProperty().bind(inventoryTableView.comparatorProperty());
 
         // Init TableView change listener
-        // TODO: Redeclare this listener in loadMenuItemSelected after an inventory has successfully been loaded from a file
         inventory.inventoryItemsProperty().addListener((ListChangeListener<InventoryItem>) c ->
-                inventoryTableView.setItems(filteredList));
+                inventoryTableView.setItems(sortedFilteredList));
 
-        // Dummy data
-        inventory.addItem("item 1", "A-XXX-XXX-XXX", 1200.123);
-        inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
-        inventory.addItem("item 3", "A-XXX-XXX-XXV", 9.09);
-
-        // Init search mode ComboBox
-        initSearchModeComboBox();
-
-        // Init TableView
-        initTableView();
+        // Force add items to table
+        inventoryTableView.setItems(sortedFilteredList);
     }
 
     private void initSearchModeComboBox()
