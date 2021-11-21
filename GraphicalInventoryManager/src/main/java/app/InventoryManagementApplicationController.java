@@ -240,7 +240,7 @@ public class InventoryManagementApplicationController
     @FXML
     public void removeSelectedItemsMenuItemSelected()
     {
-        // Remove them from the inventory
+        // Remove selected items from inventory
         inventory.removeItems(inventoryTableView.getSelectionModel().getSelectedItems());
     }
 
@@ -287,6 +287,7 @@ public class InventoryManagementApplicationController
                         case SERIAL -> i.getSerial().toUpperCase().contains(newValue.toUpperCase());
                     };
                 }));
+
         // Reinitialize TableView sort function
         // Wrapping the data in a FilteredList removed the TableView's ability to sort it
         sortedFilteredList = new SortedList<>(filteredList);
@@ -329,7 +330,8 @@ public class InventoryManagementApplicationController
                     {
                         super.updateItem(item, empty);
 
-                        if (item != null && !empty) {
+                        if(item != null && !empty)
+                        {
                             setText(item.optionText);
                         }
                     }
@@ -390,13 +392,14 @@ public class InventoryManagementApplicationController
                 {
                     return Double.parseDouble(input);
                 }
-                catch (IllegalArgumentException | NullPointerException e)
+                catch(IllegalArgumentException | NullPointerException e)
                 {
                     return Double.MIN_VALUE;
                 }
             }
         };
 
+        // Attach edit listeners to TableView cells
         nameTableViewColumn.setOnEditCommit(this::changeNameCellEvent);
         serialTableViewColumn.setOnEditCommit(this::changeSerialCellEvent);
         valueTableViewColumn.setOnEditCommit(this::changeValueCellEvent);
@@ -411,7 +414,7 @@ public class InventoryManagementApplicationController
             public void updateItem(Double price, boolean empty)
             {
                 super.updateItem(price, empty);
-                if (empty)
+                if(empty)
                 {
                     setText(null);
                 }
