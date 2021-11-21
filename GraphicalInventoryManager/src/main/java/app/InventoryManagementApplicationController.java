@@ -81,8 +81,9 @@ public class InventoryManagementApplicationController
         else
         {
             selectedItem.setName(modifiedCell.getOldValue());
-            inventoryTableView.refresh();
         }
+
+        inventoryTableView.refresh();
     }
 
     // Syncs an InventoryItem's serial field to the corresponding TableView cell
@@ -91,7 +92,7 @@ public class InventoryManagementApplicationController
         InventoryValidator validator = new InventoryValidator();
         InventoryItem selectedItem = inventoryTableView.getSelectionModel().getSelectedItem();
 
-        String newValue = modifiedCell.getNewValue();
+        String newValue = modifiedCell.getNewValue().toUpperCase();
 
         if(validator.isValidSerial(inventory, newValue, modifiedCell.getOldValue()))
         {
@@ -100,8 +101,9 @@ public class InventoryManagementApplicationController
         else
         {
             selectedItem.setSerial(modifiedCell.getOldValue());
-            inventoryTableView.refresh();
         }
+
+        inventoryTableView.refresh();
     }
 
     // Syncs an InventoryItem's value field to the corresponding TableView cell
@@ -117,8 +119,9 @@ public class InventoryManagementApplicationController
         else
         {
             selectedItem.setValue(Double.parseDouble(modifiedCell.getOldValue().toString()));
-            inventoryTableView.refresh();
         }
+
+        inventoryTableView.refresh();
     }
 
     @FXML
@@ -135,7 +138,6 @@ public class InventoryManagementApplicationController
         {
             inventory.addItem(name, serial, Double.parseDouble(value));
             clearInputTextFields();
-            inventoryTableView.refresh();
         }
     }
 
