@@ -52,11 +52,6 @@ public class InventoryItem
         return value.get();
     }
 
-    public String getValueInDollars()
-    {
-        return String.format("$%.2f", value.get());
-    }
-
     public String toString()
     {
         return "Name: " + name.get() + '\n'

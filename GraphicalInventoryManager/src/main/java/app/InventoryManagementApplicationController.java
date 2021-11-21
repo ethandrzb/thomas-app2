@@ -22,6 +22,7 @@ import logic.InventoryItem;
 import logic.InventoryValidator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
 
@@ -157,9 +158,26 @@ public class InventoryManagementApplicationController
     @FXML
     public void saveMenuItemSelected(ActionEvent event)
     {
+        ApplicationStateSerializer serializer = new ApplicationStateSerializer();
+
         // Display FileChooser to get path to destination file
+        File chosenFile = getFileChooser().showSaveDialog(inventoryTableView.getScene().getWindow());
+
+        // User closed FileChooser without selecting a file
+        if(chosenFile == null)
+        {
+            return;
+        }
 
         // Export inventory in selected format
+        try
+        {
+            serializer.saveInventory(inventory, chosenFile);
+        }
+        catch(FileNotFoundException | UnsupportedOperationException e)
+        {
+            System.err.println("Unable to export inventory to " + chosenFile);
+        }
     }
 
     @FXML
@@ -169,13 +187,7 @@ public class InventoryManagementApplicationController
         ApplicationStateSerializer serializer = new ApplicationStateSerializer();
 
         // Display FileChooser to get path to source inventory
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("TSV Files", "*.txt"),
-                new FileChooser.ExtensionFilter("HTML Files", "*.html"),
-                new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-
-        File chosenFile = fileChooser.showOpenDialog(inventoryTableView.getScene().getWindow());
+        File chosenFile = getFileChooser().showOpenDialog(inventoryTableView.getScene().getWindow());
 
         // User closed FileChooser without selecting a file
         if(chosenFile == null)
@@ -203,8 +215,20 @@ public class InventoryManagementApplicationController
         }
         catch(IOException | UnsupportedOperationException e)
         {
-            System.out.println("Unable to open inventory");
+            System.err.println("Unable to open inventory at " + chosenFile);
         }
+    }
+
+    private FileChooser getFileChooser()
+    {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("TSV Files", "*.txt"),
+                new FileChooser.ExtensionFilter("HTML Files", "*.html"),
+                new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+
+        return fileChooser;
     }
 
     @FXML

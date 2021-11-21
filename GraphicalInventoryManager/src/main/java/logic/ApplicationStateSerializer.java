@@ -11,12 +11,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-
-// TODO: Remove these links
-// https://stackoverflow.com/questions/54400414/how-to-convert-a-java-object-into-an-html-table/54400838
-// http://scrumbucket.org/converting-a-pojo-into-html/
-// http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ReflectionToStringBuilder.html
+import java.text.NumberFormat;
+import java.util.Formatter;
 
 public class ApplicationStateSerializer
 {
@@ -135,12 +133,20 @@ public class ApplicationStateSerializer
         return null;
     }
 
-    public void saveInventory(Inventory inventory, File file)
+    public void saveInventory(Inventory inventory, File file) throws FileNotFoundException
     {
-        // Get file extension from path and call appropriate save function
-        // *.txt ==> saveToTSV
-        // *.html ==> saveToHTML
-        // *.json ==> saveToJSON
+        // Get file extension from path
+        String extension = file.toString().split("\\.")[1].toLowerCase();
+
+        // Call appropriate save function
+        switch(extension)
+        {
+            case "txt" -> saveToTSV(inventory, file);
+            case "html" -> saveToHTML(inventory, file);
+            case "json" -> saveToJSON(inventory, file);
+
+            default -> throw new UnsupportedOperationException();
+        }
     }
 
     public void saveToTSV(Inventory inventory, File file)
@@ -152,17 +158,72 @@ public class ApplicationStateSerializer
         // Write serial, name, and value of each item in inventory as tab separated line
     }
 
-    public void saveToHTML(Inventory inventory, File file)
+    public void saveToHTML(Inventory inventory, File file) throws FileNotFoundException
     {
+        final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+
+        String tableRowFormat = """
+                    <tr>
+                       <td>%s</td>
+                       <td>%s</td>
+                       <td>%s</td>
+                    </tr>
+                """;
+
         // Attempt to create new file
+        try(Formatter output = new Formatter(file))
+        {
+            // Write HTML header
+            output.format("""
+                    <!DOCTYPE html>
+                    <html lang="en">
 
-        // Use library function to convert inventory to HTML table
+                    <style>
+                         table, th, td
+                         {
+                              border:1px solid black;
+                         }
+                    </style>
 
-        // Add header information
-            // Author
-            // Title
+                    <head>
+                         <meta charset="utf-8">
+                         <meta name = "author" content = "Ethan Thomas">
+                         <title>Inventory</title>
+                    </head>
+                    """);
 
-        // Write HTML to file (if necessary)
+            // Begin HTML document body
+            output.format("%s%n", "<body>");
+
+            // Write table header
+            output.format("%s%n", """
+                    <table style="width:50%">
+                        <tr>
+                             <th>Serial Number</th>
+                             <th>Name</th>
+                             <th>Value</th>
+                        </tr>
+                          """);
+            // Write inventory items
+            for(InventoryItem item : inventory.inventoryItemsProperty().get())
+            {
+                output.format(tableRowFormat, item.getName(), item.getSerial(), currencyFormat.format(item.getValue()));
+            }
+
+            // End HTML table body
+            output.format("%s%n", "</table>");
+
+            // End HTML document body
+            output.format("%s%n", "</body>");
+
+            // End HTML document
+            output.format("%s%n", "</html>");
+        }
+        catch(FileNotFoundException e)
+        {
+            System.err.println("Unable to create new file at " + file.getAbsolutePath());
+            throw new FileNotFoundException();
+        }
     }
 
     public void saveToJSON(Inventory inventory, File file)
