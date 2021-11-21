@@ -5,6 +5,8 @@
 
 package logic;
 
+import com.google.gson.Gson;
+import org.hildan.fxgson.FxGson;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -226,12 +228,20 @@ public class ApplicationStateSerializer
         }
     }
 
-    public void saveToJSON(Inventory inventory, File file)
+    public void saveToJSON(Inventory inventory, File file) throws FileNotFoundException
     {
+        Gson gson = FxGson.create();
+
         // Attempt to create new file
-
-        // Use GSON to convert inventory to JSON
-
-        // Write JSON to file (if necessary)
+        try(Formatter output = new Formatter(file))
+        {
+            // Use GSON to convert inventory to JSON and write output to file
+            output.format("%s", gson.toJson(inventory));
+        }
+        catch(FileNotFoundException e)
+        {
+            System.err.println("Unable to create new file at " + file.getAbsolutePath());
+            throw new FileNotFoundException();
+        }
     }
 }
