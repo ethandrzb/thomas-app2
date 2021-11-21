@@ -1,5 +1,5 @@
 /*
- *  UCF COP3330 Summer 2021 Application Assignment 2 Solution
+ *  UCF COP3330 Fall 2021 Application Assignment 2 Solution
  *  Copyright 2021 Ethan Thomas
  */
 
@@ -251,11 +251,6 @@ public class InventoryManagementApplicationController
         // Initialize filtered list and associated listeners
         initSortableFilteredListAndSearchFunction();
 
-        // Dummy data
-        inventory.addItem("item 1", "A-XXX-XXX-XXX", 1200.123);
-        inventory.addItem("item 2", "A-XXX-XXX-XXW", 654.45);
-        inventory.addItem("item 3", "A-XXX-XXX-XXV", 9.09);
-
         // Init search mode ComboBox
         initSearchModeComboBox();
 
@@ -349,6 +344,9 @@ public class InventoryManagementApplicationController
     {
         // Make table editable
         inventoryTableView.setEditable(true);
+
+        // Allow multiple rows to be selected
+        inventoryTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // Make columns editable
         nameTableViewColumn.setEditable(true);

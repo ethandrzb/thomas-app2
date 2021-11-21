@@ -1,5 +1,5 @@
 /*
- *  UCF COP3330 Summer 2021 Application Assignment 2 Solution
+ *  UCF COP3330 Fall 2021 Application Assignment 2 Solution
  *  Copyright 2021 Ethan Thomas
  */
 
@@ -34,7 +34,7 @@ public class InventoryValidator
     {
         if(isValidSerialFormat(serial))
         {
-            if(!inventory.containsSerial(serial) || serial.equals(oldSerial))
+            if(!inventory.containsSerial(serial.toUpperCase()) || serial.equals(oldSerial))
             {
                 return true;
             }

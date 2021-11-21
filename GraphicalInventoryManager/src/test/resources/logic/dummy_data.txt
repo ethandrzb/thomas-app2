@@ -1,0 +1,4 @@
+Serial Number	Name	Value
+A-XXX-XXX-XXX	item 1	$1,200.12
+A-XXX-XXX-XXW	item 2	$654.45
+A-XXX-XXX-XXV	item 3	$9.09
