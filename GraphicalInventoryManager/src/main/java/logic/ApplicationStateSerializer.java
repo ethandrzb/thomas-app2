@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.util.Formatter;
+import java.util.Scanner;
 
 public class ApplicationStateSerializer
 {
@@ -39,31 +40,57 @@ public class ApplicationStateSerializer
         };
     }
 
-    public Inventory loadFromTSV(File file)
+    public Inventory loadFromTSV(File file) throws IOException
     {
-        // Make sure valid header is present
-        // If not, throw IllegalArgumentException
+        Inventory inventory = new Inventory();
+        InventoryValidator validator = new InventoryValidator();
 
-        // While there are still lines to be read:
-            // Read line and split by '\t'
-            // Make sure array returned by split operation is 3 elements long
-            // If not, throw IllegalArgumentException
+        String[] loadedFields;
+        String name;
+        String serial;
+        String value;
 
-            // Check if first element is valid serial
-            // If not, display error message indicating that this could be caused by
-            // a formatting issue or two items sharing the same serial number
+        try(Scanner fromFile = new Scanner(file))
+        {
+            // Make sure valid header is present
+            if(!fromFile.nextLine().equals("Serial Number\tName\tValue"))
+            {
+                return null;
+            }
 
-            // Check if second element is valid name
-            // If not, display error message
+            while(fromFile.hasNext())
+            {
+                // Read line and split by '\t'
+                loadedFields = fromFile.nextLine().split("\t");
 
-            // Remove dollar sign from start of third element
-            // Check if third element is valid value
-            // If not, display error message
+                // Make sure array returned by split operation is 3 elements long
+                if(loadedFields.length != 3)
+                {
+                    return null;
+                }
 
-            // Create new InventoryItem with these values and add it to the buffer
+                // Extract fields from loaded fields
+                name = loadedFields[1];
+                serial = loadedFields[0];
+                value = currencyToNumericalString(loadedFields[2]);
 
-        // return new Inventory object
-        return null;
+                // Validate inputs before attempting to add the item to the inventory
+                if(validator.validateAllInputs(inventory, name, serial, value))
+                {
+                    inventory.addItem(name, serial, Double.parseDouble(value));
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            throw new IOException();
+        }
+
+        return inventory;
     }
 
     public Inventory loadFromHTML(File file) throws IOException
@@ -108,7 +135,6 @@ public class ApplicationStateSerializer
         }
         catch (IOException e)
         {
-            System.err.println("Unable to open file at " + file.getAbsolutePath());
             throw new IOException();
         }
 

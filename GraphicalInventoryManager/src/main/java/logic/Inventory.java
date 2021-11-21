@@ -19,14 +19,6 @@ public class Inventory
         inventoryItems = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
     }
 
-    public Inventory(List<InventoryItem> items)
-    {
-        this();
-
-        // Add all items in items to inventoryItems
-        inventoryItems.addAll(items);
-    }
-
     public void addItem(String name, String serial, double value)
     {
         // Create new inventory item and add it to the inventory
