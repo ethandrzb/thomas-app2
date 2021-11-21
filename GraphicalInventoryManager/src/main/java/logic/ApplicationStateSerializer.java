@@ -112,8 +112,10 @@ public class ApplicationStateSerializer
 
             for(Element row : rows)
             {
+                // Get all table data (td) elements
                 Elements columns = row.select("td");
 
+                // Skip table header and empty rows
                 if(!columns.isEmpty())
                 {
                     // Load data from current table row
