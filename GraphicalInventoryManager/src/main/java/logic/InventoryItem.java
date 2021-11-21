@@ -16,9 +16,13 @@ public class InventoryItem
 
     public InventoryItem(String name, String serial, double value)
     {
+        // Apply consistency constraints
+        serial = serial.toUpperCase();
+        value = Math.round(value * 100) / 100.0;
+
         // Assign instance variables
         this.name.set(name);
-        this.serial.set(serial.toUpperCase());
+        this.serial.set(serial);
         this.value.set(value);
     }
 
