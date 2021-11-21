@@ -15,6 +15,9 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.util.Formatter;
 
@@ -126,16 +129,26 @@ public class ApplicationStateSerializer
         return currency;
     }
 
-    public Inventory loadFromJSON(File file)
+    public Inventory loadFromJSON(File file) throws IOException
     {
+        Inventory inventory;
+        Gson gson = FxGson.create();
+
         // Attempt to open file
+        try(Reader fromFile = Files.newBufferedReader(Paths.get(file.toString())))
+        {
+            // Attempt to parse JSON with GSON
+            inventory = gson.fromJson(fromFile, Inventory.class);
+        }
+        catch(IOException e)
+        {
+            throw new IOException();
+        }
 
-        // Attempt to parse JSON with GSON
-
-        return null;
+        return inventory;
     }
 
-    public void saveInventory(Inventory inventory, File file) throws FileNotFoundException
+    public void saveInventory(Inventory inventory, File file) throws IOException
     {
         // Get file extension from path
         String extension = file.toString().split("\\.")[1].toLowerCase();

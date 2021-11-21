@@ -21,7 +21,6 @@ import logic.InventoryItem;
 import logic.InventoryValidator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
 
@@ -173,7 +172,7 @@ public class InventoryManagementApplicationController
         {
             serializer.saveInventory(inventory, chosenFile);
         }
-        catch(FileNotFoundException | UnsupportedOperationException e)
+        catch(IOException | UnsupportedOperationException e)
         {
             displayErrorDialog("Failed to export inventory to requested file",
                     "Please check the file to which you are attempting to save the inventory and try again.");
