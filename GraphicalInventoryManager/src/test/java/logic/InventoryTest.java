@@ -98,6 +98,61 @@ class InventoryTest
     }
 
     @Test
+    void canHoldAtLeast1024Items()
+    {
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> serials = new ArrayList<>();
+        ArrayList<Double> values = new ArrayList<>();
+
+        // Start with empty inventory
+        inventory.clear();
+
+        // Algorithmically generate 1025 valid item value sets and add them to inventory
+        for(int i = 0; i <= 1024; i++)
+        {
+            names.add("item " + (i + 1));
+            serials.add(indexToSerial(i));
+            values.add((double) (i + 1));
+
+            // Add to inventory
+            inventory.addItem(names.get(i), serials.get(i), values.get(i));
+        }
+
+        // Verify that 1025 items were added
+        assertEquals(1025, inventory.inventoryItemsProperty().size());
+
+        // Verify all items were added correctly
+        for(int i = 0; i <= 1024; i++)
+        {
+            assertEquals(names.get(i), inventory.inventoryItemsProperty().get(i).getName());
+            assertEquals(serials.get(i), inventory.inventoryItemsProperty().get(i).getSerial());
+            assertEquals(values.get(i), inventory.inventoryItemsProperty().get(i).getValue());
+        }
+    }
+
+    private String indexToSerial(int index)
+    {
+        if(index < 10)
+        {
+            return "T-TTT-TTT-TT" + index;
+        }
+        else if(index < 100)
+        {
+            return "T-TTT-TTT-T" + index;
+        }
+        else if(index < 1000)
+        {
+            return "T-TTT-TTT-" + index;
+        }
+        else
+        {
+            String indexString = String.valueOf(index);
+
+            return "T-TTT-TT" + indexString.charAt(0) + "-" + indexString.substring(1);
+        }
+    }
+
+    @Test
     void testToString()
     {
         String[] expected = """
