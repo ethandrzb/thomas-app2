@@ -164,13 +164,31 @@ public class ApplicationStateSerializer
         }
     }
 
-    public void saveToTSV(Inventory inventory, File file)
+    public void saveToTSV(Inventory inventory, File file) throws FileNotFoundException
     {
+        final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+
+        // Value -------------------|
+        // Name ----------------|   |
+        // Serial number ---\/  \/  \/
+        String rowFormat = "%s\t%s\t%s%n";
+
         // Attempt to create new file
+        try(Formatter output = new Formatter(file))
+        {
+            // Write TSV header "Serial Number\tName\tValue"
+            output.format(rowFormat, "Serial Number", "Name", "Value");
 
-        // Write TSV header "Serial Number\tName\tValue"
-
-        // Write serial, name, and value of each item in inventory as tab separated line
+            for(InventoryItem item : inventory.inventoryItemsProperty())
+            {
+                // Write serial, name, and value of each item in inventory as tab separated line
+                output.format(rowFormat, item.getSerial(), item.getName(), currencyFormat.format(item.getValue()));
+            }
+        }
+        catch(FileNotFoundException e)
+        {
+            throw new FileNotFoundException();
+        }
     }
 
     public void saveToHTML(Inventory inventory, File file) throws FileNotFoundException
@@ -236,7 +254,6 @@ public class ApplicationStateSerializer
         }
         catch(FileNotFoundException e)
         {
-            System.err.println("Unable to create new file at " + file.getAbsolutePath());
             throw new FileNotFoundException();
         }
     }
