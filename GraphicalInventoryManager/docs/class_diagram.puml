@@ -123,8 +123,6 @@ enum searchByOption
     +boolean isValidMonetaryValue(String monetaryValue)
     
     +boolean validateAllInputs(Inventory inventory, String name, String serial, String value)
-
-    +boolean validateAllInputs(String name, String serial, String value)
     
     -void displayErrorDialog(String title, String message)
 }
