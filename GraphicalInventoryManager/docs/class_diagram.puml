@@ -9,91 +9,130 @@
 
 +class InventoryManagementApplicationController
 {
-    private TableView<?> inventoryTableView;
-    private TextField itemNameTextField;
-    private TextField itemSerialTextField;
-    private TextField itemValueTextField;
-    private ToggleGroup searchByToggleGroup;
-    private TextField searchTextField;
-    private ToggleGroup sortByToggleGroup;
+    -searchByOption selectedSearchOption
+    
+    -Inventory inventory
 
-    public void addItemButtonPressed(ActionEvent event)
-    public void searchInventory(ActionEvent event)
-    public void clearInventoryMenuItemSelected(ActionEvent event)
-    public void saveMenuItemSelected(ActionEvent event)
-    public void loadMenuItemSelected(ActionEvent event)
-    public void removeSelectedItemsMenuItemSelected(ActionEvent event)
-    private void displayErrorDialog(String title, String message)
+    -TableView<InventoryItem> inventoryTableView
 
-    public void initialize()
-    private void initRadioMenuItemEnums()
+    -TableColumn<InventoryItem, String> nameTableViewColumn
+    -TableColumn<InventoryItem, String> serialTableViewColumn
+    -TableColumn<InventoryItem, Double> valueTableViewColumn
+
+    -TextField itemNameTextField
+    -TextField itemSerialTextField
+    -TextField itemValueTextField
+
+    -ComboBox<searchByOption> searchModeComboBox
+    -TextField searchTextField
+
+    +void changeNameCellEvent(TableColumn.CellEditEvent<InventoryItem, String> modifiedCell)
+    +void changeSerialCellEvent(TableColumn.CellEditEvent<InventoryItem, String> modifiedCell)
+    +void changeValueCellEvent(TableColumn.CellEditEvent<InventoryItem, Double> modifiedCell)
+
+    +void addItemButtonPressed()
+    -void clearInputTextFields()
+    +void clearInventoryMenuItemSelected()
+
+    +void saveMenuItemSelected()
+    +void loadMenuItemSelected()
+    -FileChooser getFileChooser()
+
+    +void removeSelectedItemsMenuItemSelected()
+
+    +void initialize()
+    -void initSortableFilteredListAndSearchFunction()
+    -void initSearchModeComboBox()
+    -void initCustomComboBoxOptionText()
+    -void initTableView()
+    -void displayErrorDialog(String title, String message)
+}
+
+enum searchByOption
+{
+    NAME("By Name")
+    SERIAL("By Serial")
+    
+    -final String optionText
+    
+    searchByOption(String optionText)
 }
 
 +class InventoryItem
 {
-    SimpleStringProperty name;
-    SimpleStringProperty serial;
-    SimpleDoubleProperty value;
+    -final SimpleStringProperty name
+    -final SimpleStringProperty serial
+    -final SimpleDoubleProperty value
 
-    public InventoryItem(String name, String serial, double value)
+    +InventoryItem(String name, String serial, double value)
 
-    public void setName(String name)
-    public SimpleStringProperty getName()
+    +void setName(String name)
+    +String getName()
 
-    public void setSerial(String serial)
-    public SimpleStringProperty getSerial()
+    +void setSerial(String serial)
+    +String getSerial()
 
-    public void setValue(double value)
-    public SimpleDoubleProperty getValue()
+    +void setValue(double value)
+    +double getValue()
 
-    public String toString()
+    +String toString()
 }
 
 +class Inventory
 {
-    private ArrayList<InventoryItem> inventoryItemData;
-    private ObservableList<InventoryItem> inventoryItems;
+    -final SimpleListProperty<InventoryItem> inventoryItems
 
-    public Inventory()
-    public Inventory(List<InventoryItem> items)
+    +Inventory()
 
-    public void addInventoryItem(String name, String serial, double value)
-    public void removeItem(InventoryItem item)
+    +void addItem(String name, String serial, double value)
+    +SimpleListProperty<InventoryItem> inventoryItemsProperty()
+    +boolean containsSerial(String serial)
+    +void removeItems(List<InventoryItem> items)
+    +void clear()
 
-    public Set<String> getSerialsInUse()
-
-    public void removeMultipleItems(List<InventoryItem> items)
-    public void clearInventory()
-
-    public String toString()
+    +String toString()
 }
 
 +class ApplicationStateSerializer
 {
-    public Inventory loadInventory(Path path)
-    public Inventory loadFromTSV(File file)
-    public Inventory loadFromHTML(File file)
-    public Inventory loadFromJSON(File file)
+    +Inventory loadInventory(File file)
+    -Inventory loadFromTSV(File file)
+    -Inventory loadFromHTML(File file)
+    -Inventory loadFromJSON(File file)
+    
+    -String currencyToNumericalString(String currency)
 
-    public void saveInventory(Inventory inventory, File file)
-    public void saveToTSV(Inventory inventory, File file)
-    public void saveToHTML(Inventory inventory, File file)
-    public void saveToJSON(Inventory inventory, File file)
+    +void saveInventory(Inventory inventory, File file)
+    -void saveToTSV(Inventory inventory, File file)
+    -void saveToHTML(Inventory inventory, File file)
+    -void saveToJSON(Inventory inventory, File file)
 }
 
 +class InventoryValidator
 {
-    public boolean isValidItemName(String name)
-    public boolean isValidSerial(String serial)
-    public boolean isValidMonetaryValue(String monetaryValue)
+    -boolean errorDialogsEnabled
 
-    public boolean validateAllInputs(String name, String serial, String value)
-    private boolean validateInventory(Inventory inventory)
+    +boolean getErrorDialogsEnabled()
+    +void setErrorDialogsEnabled(boolean errorDialogsEnabled)
+
+    +boolean isValidItemName(String name)
+    
+    -boolean isValidSerialFormat(String serial)
+    +boolean isValidSerial(Inventory inventory, String serial, String oldSerial)
+    
+    +boolean isValidMonetaryValue(String monetaryValue)
+    
+    +boolean validateAllInputs(Inventory inventory, String name, String serial, String value)
+
+    +boolean validateAllInputs(String name, String serial, String value)
+    
+    -void displayErrorDialog(String title, String message)
 }
 
 InventoryItem --* Inventory
 Inventory --* InventoryManagementApplicationController
 InventoryValidator --* InventoryManagementApplicationController
+searchByOption --* InventoryManagementApplicationController
 InventoryValidator --* ApplicationStateSerializer
 ApplicationStateSerializer --* InventoryManagementApplicationController
 
